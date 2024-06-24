@@ -1,5 +1,3 @@
 # irish-snap-detector
 
-test
-
-https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification
+Image classification dataset taken from [kaggle](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification)
