@@ -54,6 +54,44 @@ test_generator = test_datagen.flow_from_directory(
 validate_generator = validate_datagen.flow_from_directory(
     validate_dir,
     target_size=(224,224),
-    batch_size=BATCH_SIZE
+    batch_size=BATCH_SIZE,
     class_mode='categorical'
+)
+
+# defining the model
+model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    tf.keras.layers.Flatten(),
+
+    tf.keras.layers.Dense(512, activation='relu'),
+
+    # turns off neurons during training
+    # this helps with overfitting
+    tf.keras.layers.Dropout(0.5),
+
+    tf.keras.layers.Dense(train_generator.num_classes, activation='softmax')
+])
+
+# compiling the model
+model.compile(
+    optimizer='adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+    )
+
+# train the model
+history = model.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // BATCH_SIZE,
+    epochs=20,
+    validation_data=validate_generator,
+    validation_steps=validate_generator.samples // BATCH_SIZE
 )
