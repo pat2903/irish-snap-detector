@@ -1,9 +1,13 @@
-import tensorflow as tf
-from tensorflow import keras
 import numpy as np
+import tensorflow as tf
 import matplotlib.pyplot as plt
-
+import keras
+from keras import layers
+from tensorflow.python.keras.layers import EfficientNetB0
 from keras.src.legacy.preprocessing.image import ImageDataGenerator
+
+# First tried CNN, but I had trouble with test accuracy
+# Now going to try a pre-trained model like EfficentNet 
 
 # paths
 train_dir = 'dataset/train'
@@ -31,9 +35,10 @@ train_datagen = ImageDataGenerator(
     zoom_range = 0.2,
 )
 
+validate_datagen = ImageDataGenerator(rescale=1.0/255.0)
+
 test_datagen = ImageDataGenerator(rescale=1.0/255.0)
 
-validate_datagen = ImageDataGenerator(rescale=1.0/255.0)
 
 # load images from directory
 
@@ -44,15 +49,15 @@ train_generator = train_datagen.flow_from_directory(
     class_mode='categorical'
 )
 
-test_generator = test_datagen.flow_from_directory(
-    test_dir,
+validate_generator = validate_datagen.flow_from_directory(
+    validate_dir,
     target_size=(224,224),
     batch_size=BATCH_SIZE,
     class_mode='categorical'
 )
 
-validate_generator = validate_datagen.flow_from_directory(
-    validate_dir,
+test_generator = test_datagen.flow_from_directory(
+    test_dir,
     target_size=(224,224),
     batch_size=BATCH_SIZE,
     class_mode='categorical'
@@ -91,7 +96,12 @@ model.compile(
 history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.samples // BATCH_SIZE,
-    epochs=20,
+    epochs=10,
     validation_data=validate_generator,
     validation_steps=validate_generator.samples // BATCH_SIZE
 )
+
+test_loss, test_accuracy = model.evaluate(test_generator, steps=test_generator.samples // BATCH_SIZE)
+
+print(f"Test accuracy: {test_accuracy:.4f}")
+print(f"Test loss: {test_loss:.4f}")
