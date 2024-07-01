@@ -62,6 +62,8 @@ test_generator = test_datagen.flow_from_directory(
 )
 
 print(f"Number of classes: {train_generator.num_classes}")
+for class_name, class_index in train_generator.class_indices.items():
+    print(f"{class_index}: {class_name}")
 
 # load with pre-trained ImageNet
 # exclude top layers for transfer learning
@@ -93,14 +95,14 @@ model.compile(
 
 # callbacks for training
 # early stopping to prevent overfitting
-early_stopping = EarlyStopping(patience=10, restore_best_weights=True)
-reduce_lr = ReduceLROnPlateau(factor=0.2, patience=3)
+early_stopping = EarlyStopping(patience=5, restore_best_weights=True)
+reduce_lr = ReduceLROnPlateau(factor=0.2, patience=5)
 
 # train the model
 history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.samples // BATCH_SIZE,
-    epochs=100,
+    epochs=50,
     validation_data=validate_generator,
     validation_steps=validate_generator.samples // BATCH_SIZE,
     callbacks=[early_stopping, reduce_lr]
@@ -112,4 +114,6 @@ test_loss, test_accuracy = model.evaluate(test_generator, steps=test_generator.s
 print(f"Test accuracy: {test_accuracy:.4f}")
 print(f"Test loss: {test_loss:.4f}")
 
-save_model(model, 'model_2.keras')
+save_model(model, 'model_3_keras.keras')
+save_model(model, 'model_3_h5.h5')
+model.save_weights('model_3.weights.h5')
