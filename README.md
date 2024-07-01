@@ -11,3 +11,10 @@ Training with EfficientNet B3:
 Test accuracy: 0.9727
 Test loss: 0.0878
 
+Training with EfficientNet V2S:
+l: 0.9333
+Test accuracy: 0.9727
+Test loss: 0.5976
+Test precision: 0.9722
+Test recall: 0.9570
+F1 Score: 0.9645
