@@ -10,7 +10,7 @@ from tensorflow.keras.models import save_model
 
 # eval
 from sklearn.model_selection import KFold
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import classification_report
 import seaborn as sns
 
 # paths
