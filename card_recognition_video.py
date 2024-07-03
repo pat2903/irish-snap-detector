@@ -24,6 +24,11 @@ model.compile(
     metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()]
 )
 
+# TO DO TOMORROW:
+# PROGRAM STRUGGLES IN LOW LIGHT
+# NEED TO CHANGE SOME PREPROCESSING
+
+
 ######## CARD PREPROCESSING #########
 
 # Isolate card based of colour and shape
