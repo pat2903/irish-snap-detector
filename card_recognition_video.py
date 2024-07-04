@@ -59,8 +59,6 @@ def detect_card_outline(frame):
     kernel = np.ones((5,5), np.uint8)
     # fill regions
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-    # remove noise i.e. black regions
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -128,7 +126,7 @@ while True:
             
             cv2.drawContours(frame, [contour], 0, (0, 255, 0), 2)
 
-    cv2.imshow('Video', frame)
+    cv2.imshow('Card Detector', frame)
 
     # press 'q' to quit
     if cv2.waitKey(1) & 0xFF == ord('q'):
