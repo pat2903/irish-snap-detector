@@ -82,7 +82,8 @@ def detect_card_outline(frame):
 # more info
 # https://www.geeksforgeeks.org/python-opencv-capture-video-from-camera/
 
-cap = cv2.VideoCapture(0)
+# idx 1 to connect to continuity camera
+cap = cv2.VideoCapture(1)
 
 if not cap.isOpened():
     print("Can't open webcam")
