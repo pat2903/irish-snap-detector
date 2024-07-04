@@ -24,10 +24,6 @@ model.compile(
     metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()]
 )
 
-# TO DO TOMORROW:
-# PROGRAM STRUGGLES IN LOW LIGHT
-# NEED TO CHANGE SOME PREPROCESSING
-
 
 ######## CARD PREPROCESSING #########
 
@@ -35,46 +31,52 @@ model.compile(
 def detect_card_outline(frame):
     """
     Detect playing cards in a given frame
-
-    This is done by:
-    1. Using HSV (Hue, saturation, value) colour space for better colour-based segmentation 
-    2. Focus on white; I assume that cards are white, which they usually are.
-    3. Use morphological operatons (shape based) to clean up edges and remove noise.
-    4. Filter contours; I detect only card-like shapes.
     """
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # define range for white colour
-    # remember, working in HSV now
+    # detect card by assuming it is white and looking
+    # for white pixels
     white_lower_bound = np.array([0, 0, 200])
     white_upper_bound = np.array([180, 30, 255])
+    white_mask = cv2.inRange(hsv, white_lower_bound, white_upper_bound)
 
-    # create binary mask of white (i.e. card) regions
-    mask = cv2.inRange(hsv, white_lower_bound, white_upper_bound)
+    # approach used when the background is white
+    # taken from https://stackoverflow.com/questions/51400374/image-card-detection-using-python
+    _, thresh_H = cv2.threshold(hsv[:, :, 0], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, thresh_S = cv2.threshold(hsv[:, :, 1], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    combined_thresh = cv2.bitwise_or(thresh_H, thresh_S)
 
-    # clean up  mask using morphological operations
-    # https://www.geeksforgeeks.org/python-opencv-morphological-operations/
-    # like a matrix
-    kernel = np.ones((5,5), np.uint8)
-    # fill regions
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    # based off brightness, decide whether to use 
+    # white mask or combined thresh
+    # white mask works best when the background pixels are darker
+    # combined_thresh works best when the background pixels are lighter
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    normalized_gray = gray.astype(float) / np.max(gray)
+    average_brightness = np.mean(normalized_gray)
+    if average_brightness < 0.5:  
+        final_mask = white_mask
+    else:
+        final_mask = combined_thresh
 
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # clean the mask
+    kernel = np.ones((5, 5), np.uint8)
+    dilation = cv2.dilate(final_mask, kernel, iterations=1)
 
-    # now, i filter the countours
-    # to identify card-like shapes
-    # cards trained are like 224x224 = ~50,000
-    # going to assume the pixel area could be 10% of that, so ~5000
+    contours, _ = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # quadrilateral logic:
+    # inspired by
+    # https://stackoverflow.com/questions/62274412/cv2-approxpolydp-cv2-arclength-how-these-works
     res = []
     for contour in contours:
         area = cv2.contourArea(contour)
-        # quadrilateral logic:
-        # https://stackoverflow.com/questions/62274412/cv2-approxpolydp-cv2-arclength-how-these-works
+        # cards trained are like 224x224 = ~50,000
+        # going to assume the pixel area could be 10% of that, so ~5000
         if area > 5000:
             shape_perimeter = cv2.arcLength(contour, True)
-            approx = cv2.approxPolyDP(contour, 0.02*shape_perimeter, True)
-            if len(approx) == 4:
+            approx = cv2.approxPolyDP(contour, 0.03*shape_perimeter, True)
+            if 4 <= len(approx) <= 6:
                 res.append(approx)
     return res
 
