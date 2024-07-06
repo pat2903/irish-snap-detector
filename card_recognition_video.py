@@ -35,18 +35,6 @@ def detect_card_outline(frame):
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # detect card by assuming it is white and looking
-    # for white pixels
-    white_lower_bound = np.array([0, 0, 200])
-    white_upper_bound = np.array([180, 30, 255])
-    white_mask = cv2.inRange(hsv, white_lower_bound, white_upper_bound)
-
-    # approach used when the background is white
-    # taken from https://stackoverflow.com/questions/51400374/image-card-detection-using-python
-    _, thresh_H = cv2.threshold(hsv[:, :, 0], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    _, thresh_S = cv2.threshold(hsv[:, :, 1], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    combined_thresh = cv2.bitwise_or(thresh_H, thresh_S)
-
     # based off brightness, decide whether to use 
     # white mask or combined thresh
     # white mask works best when the background pixels are darker
@@ -54,10 +42,19 @@ def detect_card_outline(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     normalized_gray = gray.astype(float) / np.max(gray)
     average_brightness = np.mean(normalized_gray)
-    if average_brightness < 0.5:  
-        final_mask = white_mask
+    final_mask = None
+    if average_brightness < 0.5:
+        # detect card by assuming it is white and looking
+        # for white pixels
+        white_lower_bound = np.array([0, 0, 200])
+        white_upper_bound = np.array([180, 30, 255])
+        final_mask = cv2.inRange(hsv, white_lower_bound, white_upper_bound)  
     else:
-        final_mask = combined_thresh
+        # approach used when the background is white
+        # taken from https://stackoverflow.com/questions/51400374/image-card-detection-using-python
+        _, thresh_H = cv2.threshold(hsv[:, :, 0], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _, thresh_S = cv2.threshold(hsv[:, :, 1], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        final_mask = cv2.bitwise_or(thresh_H, thresh_S)
 
     # clean the mask
     kernel = np.ones((5, 5), np.uint8)
