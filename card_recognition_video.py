@@ -83,56 +83,56 @@ def detect_card_outline(frame):
 # https://www.geeksforgeeks.org/python-opencv-capture-video-from-camera/
 
 # idx 1 to connect to continuity camera
-cap = cv2.VideoCapture(1)
+# cap = cv2.VideoCapture(1)
 
-if not cap.isOpened():
-    print("Can't open webcam")
-    exit()
+# if not cap.isOpened():
+#     print("Can't open webcam")
+#     exit()
 
 
-while True:
-    # capture the video frame buy frame
-    ret, frame = cap.read()
+# while True:
+#     # capture the video frame buy frame
+#     ret, frame = cap.read()
 
-    if not ret:
-        print("Failed to capture frame")
-        break 
+#     if not ret:
+#         print("Failed to capture frame")
+#         break 
 
-    card_contours = detect_card_outline(frame)
+#     card_contours = detect_card_outline(frame)
 
-    for contour in card_contours:
-        # going to use to mark the card boundary
-        x,y,w,h = cv2.boundingRect(contour)
+#     for contour in card_contours:
+#         # going to use to mark the card boundary
+#         x,y,w,h = cv2.boundingRect(contour)
 
-        card_img = frame[y:y+h, x:x+w]
-        card_img = cv2.resize(card_img, (224, 224))
-        card_img = cv2.cvtColor(card_img, cv2.COLOR_BGR2RGB)
-        card_img = Image.fromarray(card_img)
-        img_array = np.array(card_img)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = preprocess_input(img_array)
+#         card_img = frame[y:y+h, x:x+w]
+#         card_img = cv2.resize(card_img, (224, 224))
+#         card_img = cv2.cvtColor(card_img, cv2.COLOR_BGR2RGB)
+#         card_img = Image.fromarray(card_img)
+#         img_array = np.array(card_img)
+#         img_array = np.expand_dims(img_array, axis=0)
+#         img_array = preprocess_input(img_array)
 
-        predictions = model.predict(img_array)
-        predicted_class_index = np.argmax(predictions[0])
-        confidence = predictions[0][predicted_class_index]
+#         predictions = model.predict(img_array)
+#         predicted_class_index = np.argmax(predictions[0])
+#         confidence = predictions[0][predicted_class_index]
 
-        if confidence >= CONFIDENCE_THRESHOLD:
-            predicted_card = cards[predicted_class_index]
+#         if confidence >= CONFIDENCE_THRESHOLD:
+#             predicted_card = cards[predicted_class_index]
 
-            cv2.putText(frame, f"{predicted_card}", (x, y-25), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
+#             cv2.putText(frame, f"{predicted_card}", (x, y-25), 
+#                         cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
             
-            cv2.putText(frame, f"Conf: {confidence:.2f}", (x, y+h+35), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
+#             cv2.putText(frame, f"Conf: {confidence:.2f}", (x, y+h+35), 
+#                         cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
             
-            cv2.drawContours(frame, [contour], 0, (0, 255, 0), 2)
+#             cv2.drawContours(frame, [contour], 0, (0, 255, 0), 2)
 
-    cv2.imshow('Card Detector', frame)
+#     cv2.imshow('Card Detector', frame)
 
-    # press 'q' to quit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+#     # press 'q' to quit
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
 
-# when everything done, release the capture
-cap.release()
-cv2.destroyAllWindows()
+# # when everything done, release the capture
+# cap.release()
+# cv2.destroyAllWindows()
