@@ -73,6 +73,7 @@ def detect_card_outline(frame):
         if area > 5000:
             shape_perimeter = cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, 0.03*shape_perimeter, True)
+            # detection sometimes a bit wonky, so i'll give it a bit of leeway 
             if 4 <= len(approx) <= 6:
                 res.append(approx)
     return res
