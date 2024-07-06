@@ -9,7 +9,7 @@ from constants import cards, create_model
 import cv2
 import time
 
-CONFIDENCE_THRESHOLD = 0.7
+CONFIDENCE_THRESHOLD = 0.9
 
 # disable progress bar, so it's easier to read output
 tf.keras.utils.disable_interactive_logging()
