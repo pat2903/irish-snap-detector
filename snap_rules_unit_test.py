@@ -75,6 +75,12 @@ class TestIrishSnap(unittest.TestCase):
         self.game.play_card("queen of spades")
         result = self.game.play_card("king of hearts")
         self.assertTrue(result)
+    
+    def test_reset_called_number_after_ten(self):
+        for _ in range(10):
+            self.game.play_card("two of clubs")
+        result = self.game.play_card("ace of hearts")
+        self.assertTrue(result)
 
 if __name__ == '__main__':
     unittest.main()
