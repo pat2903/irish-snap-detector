@@ -104,6 +104,36 @@ class TestIrishSnap(unittest.TestCase):
             self.game.play_card("five of clubs")
         result = self.game.play_card("ace of hearts")
         self.assertTrue(result)
+    
+    def test_consecutive_cards_ten_jack(self):
+        self.game.play_card("ten of spades")
+        result = self.game.play_card("jack of hearts")
+        self.assertTrue(result)
+    
+    def test_consecutive_cards_jack_ten(self):
+        self.game.play_card("jack of hearts")
+        result = self.game.play_card("ten of spades")
+        self.assertTrue(result)
+    
+    def test_consecutive_cards_jack_queen(self):
+        self.game.play_card("jack of hearts")
+        result = self.game.play_card("queen of diamonds")
+        self.assertTrue(result)
+    
+    def test_consecutive_cards_queen_jack(self):
+        self.game.play_card("queen of diamonds")
+        result = self.game.play_card("jack of hearts")
+        self.assertTrue(result)
+    
+    def test_consecutive_cards_queen_king(self):
+        self.game.play_card("queen of diamonds")
+        result = self.game.play_card("king of clubs")
+        self.assertTrue(result)
+    
+    def test_consecutive_cards_king_queen(self):
+        self.game.play_card("king of clubs")
+        result = self.game.play_card("queen of diamonds")
+        self.assertTrue(result)
 
 if __name__ == '__main__':
     unittest.main()
