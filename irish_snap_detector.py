@@ -8,7 +8,7 @@ from tensorflow.keras.applications.efficientnet_v2 import preprocess_input
 from constants import cards, create_model
 import cv2
 from card_recognition_video import detect_card_outline
-from irish_snap import IrishSnap
+from irish_snap_rules import IrishSnap
 from card import Card
 
 CONFIDENCE_THRESHOLD = 0.9
