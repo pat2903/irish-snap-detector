@@ -35,8 +35,18 @@ class Card:
         return value_map.get(value, 0)
     
     def __eq__(self, other_card) -> bool:
+        """
+        Returns true if the suit and value are the same
+        """
+        if isinstance(other_card, Card):
+            return self.value == other_card.value and self.suit == other_card.suit
+        return False
+    
+    def equal_value(self, other_card) -> bool:
+        """
+        Returns true if the values are the same. Does not take into the account the suit.
+        """
         if isinstance(other_card, Card):
             return self.value == other_card.value
         return False
-    
     
