@@ -17,7 +17,7 @@ CONFIDENCE_THRESHOLD = 0.9
 tf.keras.utils.disable_interactive_logging()
 
 class CardDetector():
-    def __init__(self, webcam: int):
+    def __init__(self, camera: int):
         self.model = create_model()
         self.model = tf.keras.models.load_model('model_4_keras.keras')
         self.model.compile(
@@ -25,7 +25,7 @@ class CardDetector():
             loss='categorical_crossentropy',
             metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()]
         )
-        self.cap = cv2.VideoCapture(webcam)
+        self.cap = cv2.VideoCapture(camera)
         self.irish_snap = IrishSnap()
         self.last_detected_card = None
 

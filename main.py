@@ -1,7 +1,7 @@
 from irish_snap_detector import CardDetector
 
 def main():
-    # note: change the value '1' to the desired external camera
+    # note: change the value to the desired external camera
     irish_snap_game = CardDetector(1)
 
     try:
