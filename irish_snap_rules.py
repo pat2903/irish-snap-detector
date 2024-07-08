@@ -24,7 +24,8 @@ class IrishSnap:
     
     def check_snap(self, new_card: Card) -> bool:
         if len(self.pile) < 2:
-            return False
+            return (self.joker_snap(new_card) or 
+                    self.same_value_as_called_snap(new_card))
         
         return (
             self.basic_snap(new_card) or
@@ -41,10 +42,10 @@ class IrishSnap:
         return new_card.__eq__(self.pile[-2])
     
     def top_bottom_snap(self, new_card: Card) -> bool:
-        return new_card.__eq__(self.pile[0])
+        return new_card.equal_value(self.pile[0])
     
     def sandwich_snap(self, new_card: Card) -> bool:
-        return len(self.pile) > 2 and new_card.__eq__(self.pile[-3])
+        return len(self.pile) > 2 and new_card.equal_value(self.pile[-3])
     
     def consecutive_cards_snap(self, new_card: Card) -> bool:
         #edge case to consider: king -> ace
