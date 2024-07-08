@@ -81,6 +81,29 @@ class TestIrishSnap(unittest.TestCase):
             self.game.play_card("two of clubs")
         result = self.game.play_card("ace of hearts")
         self.assertTrue(result)
+    
+    def test_cards_add_to_ten_snap_with_ace(self):
+        self.game.play_card("ace of diamonds")
+        result = self.game.play_card("nine of spades")
+        self.assertTrue(result)
+    
+    def test_same_value_as_called_snap_jack_no_snap(self):
+        for _ in range(10):
+            self.game.play_card("two of clubs")
+        result = self.game.play_card("jack of diamonds")
+        self.assertFalse(result)
+    
+    def test_cards_dont_add_to_ten_snap_with_face_cards(self):
+        self.game.play_card("king of hearts")
+        result = self.game.play_card("ten of spades")
+        self.assertFalse(result)
+    
+    def test_top_bottom_snap_with_many_cards(self):
+        self.game.play_card("ace of spades")
+        for _ in range(20):
+            self.game.play_card("five of clubs")
+        result = self.game.play_card("ace of hearts")
+        self.assertTrue(result)
 
 if __name__ == '__main__':
     unittest.main()
