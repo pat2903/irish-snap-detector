@@ -10,6 +10,7 @@ import cv2
 from card_recognition_video import detect_card_outline
 from irish_snap_rules import IrishSnap
 from card import Card
+import os
 
 CONFIDENCE_THRESHOLD = 0.9
 
@@ -19,7 +20,7 @@ tf.keras.utils.disable_interactive_logging()
 class CardDetector():
     def __init__(self, camera: int):
         self.model = create_model()
-        self.model = tf.keras.models.load_model('model_4_keras.keras')
+        self.model = tf.keras.models.load_model('models/model_4_keras.keras')
         self.model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
             loss='categorical_crossentropy',

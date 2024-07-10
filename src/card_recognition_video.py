@@ -12,17 +12,17 @@ import time
 CONFIDENCE_THRESHOLD = 0.9
 
 # disable progress bar, so it's easier to read output
-tf.keras.utils.disable_interactive_logging()
+# tf.keras.utils.disable_interactive_logging()
 
-model = create_model()
+# model = create_model()
 
-model = tf.keras.models.load_model('model_4_keras.keras')
+# model = tf.keras.models.load_model('src/models/model_4_keras.keras')
 
-model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
-    loss='categorical_crossentropy',
-    metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()]
-)
+# model.compile(
+#     optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+#     loss='categorical_crossentropy',
+#     metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()]
+# )
 
 
 ######## CARD PREPROCESSING #########

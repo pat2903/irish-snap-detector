@@ -1,6 +1,9 @@
 # unit test for the snap rules
 
 import unittest
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from irish_snap_rules import IrishSnap
 
 class TestIrishSnap(unittest.TestCase):

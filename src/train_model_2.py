@@ -14,9 +14,9 @@ from sklearn.metrics import classification_report
 import seaborn as sns
 
 # paths
-train_dir = 'dataset/train'
-test_dir = 'dataset/test'
-validate_dir = 'dataset/valid'
+train_dir = '../dataset/train'
+test_dir = '../dataset/test'
+validate_dir = '../dataset/valid'
 
 # in general, batch size 32 is recommended
 # https://stackoverflow.com/questions/35050753/how-big-should-batch-size-and-number-of-epochs-be-when-fitting-a-model
@@ -113,7 +113,7 @@ model = tf.keras.Model(inputs=inputs, outputs=outputs)
 # callbacks for training
 # early stopping to prevent overfitting
 early_stopping = EarlyStopping(patience=10, restore_best_weights=True)
-checkpoint = ModelCheckpoint('best_model.keras', save_best_only=True)
+checkpoint = ModelCheckpoint('models/best_model.keras', save_best_only=True)
 lr_scheduler = LearningRateScheduler(lr_scheduler)
 
 # compiling the model
@@ -142,8 +142,8 @@ print(f"Test precision: {test_precision:.4f}")
 print(f"Test recall: {test_recall:.4f}")
  
 # save the model in various formats, for testing purposes
-save_model(model, 'model_4_keras.keras')
-save_model(model, 'model_4_h5.h5')
+save_model(model, 'models/model_5_keras.keras')
+save_model(model, 'models/model_5_h5.h5')
 #model.save_weights('model_4.weights.h5')
 
 # further testing
