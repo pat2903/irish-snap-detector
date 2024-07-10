@@ -1,5 +1,4 @@
 import tensorflow as tf
-import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from keras import layers, regularizers
@@ -8,15 +7,31 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, LearningRateScheduler
 from tensorflow.keras.models import save_model
 
-# eval
+# for eval
 from sklearn.model_selection import KFold
 from sklearn.metrics import classification_report
 import seaborn as sns
 
+
+
+
+
+
+##### NOTE
+##### the original code has been modified somewhat from what was used to train the model
+##### that is used, model_4_keras.keras
+
+
+
+
+
+
+
+
 # paths
-train_dir = '../dataset/train'
-test_dir = '../dataset/test'
-validate_dir = '../dataset/valid'
+train_dir = 'dataset/train'
+test_dir = 'dataset/test'
+validate_dir = 'dataset/valid'
 
 # in general, batch size 32 is recommended
 # https://stackoverflow.com/questions/35050753/how-big-should-batch-size-and-number-of-epochs-be-when-fitting-a-model
@@ -94,6 +109,7 @@ for layer in V2S_Model.layers[-40:]:
     layer.trainable = True
 
 # dropout is used to reduce overfitting issues
+# two dense layers used to improve generalisation
 inputs = tf.keras.Input(shape=(IMG_SIZE, IMG_SIZE, 3))
 x = V2S_Model(inputs)
 x = tf.keras.layers.GlobalAveragePooling2D()(x)
@@ -103,14 +119,15 @@ x = tf.keras.layers.Dropout(0.5)(x1)
 x = tf.keras.layers.BatchNormalization()(x)
 x = tf.keras.layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(0.01))(x)
 x = tf.keras.layers.Dropout(0.3)(x)
+# combine dense layers for better feature rep and learning capacity
 x = tf.keras.layers.Concatenate()([x, x1])
 outputs = tf.keras.layers.Dense(NUM_CLASSES, activation='softmax')(x)
 model = tf.keras.Model(inputs=inputs, outputs=outputs)
 
 # callbacks for training
 # early stopping to prevent overfitting
-early_stopping = EarlyStopping(patience=10, restore_best_weights=True)
-checkpoint = ModelCheckpoint('models/best_model.keras', save_best_only=True)
+early_stopping = EarlyStopping(patience=5, restore_best_weights=True)
+checkpoint = ModelCheckpoint('src/models/best_model.keras', save_best_only=True)
 lr_scheduler = LearningRateScheduler(lr_scheduler)
 
 # compiling the model
@@ -139,8 +156,8 @@ print(f"Test precision: {test_precision:.4f}")
 print(f"Test recall: {test_recall:.4f}")
  
 # save the model in various formats, for testing purposes
-save_model(model, 'models/model_5_keras.keras')
-save_model(model, 'models/model_5_h5.h5')
+save_model(model, 'src/models/model_5_keras.keras')
+save_model(model, 'src/models/model_5_h5.h5')
 #model.save_weights('model_4.weights.h5')
 
 # further testing
