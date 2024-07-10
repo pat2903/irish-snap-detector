@@ -1,5 +1,9 @@
 # Irish Snap Detector
 
+## Introduction
+
+This Python project utilises OpenCV to automatically detect snaps in the card game Irish Snap (explanation below). TensorFlow is used to train the model to recognise the cards, ensuring accurate and reliable snap detections.
+
 ## Rules of Irish Snap
 A game where players take turns placing cards face-up and race to spot pairs or triplets of cards that correspond to the following rules (Note: these rules vary from person to person-these are the rules I usually play with):
 
@@ -12,21 +16,17 @@ A game where players take turns placing cards face-up and race to spot pairs or 
 7. Same value as the number called (goes 1-10, J, Q, K don't count);
 8. Cards add to 10. 
 
-Image classification dataset taken from [kaggle](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification)
+## Dataset
 
+My model was trained using the dataset which can be accessed through[this link](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification).
 
-Training with EfficientNet B0:
-Test accuracy: 0.8164
-Test loss: 1.1566
+My model was trained using EfficientNet V2S, one of the newest and fastest models available. Additionally, it is also pre-trained, allowing for transfer learning. This improves not only the peformance, but the accuracy of the model.
 
-Training with EfficientNet B3:
-Test accuracy: 0.9727
-Test loss: 0.0878
-
-Training with EfficientNet V2S:
-l: 0.9333
+Diagnostics:
 Test accuracy: 0.9727
 Test loss: 0.5976
 Test precision: 0.9722
 Test recall: 0.9570
 F1 Score: 0.9645
+
+![Training History](src/training_history.png)
