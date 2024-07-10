@@ -17,8 +17,9 @@ A game where players take turns placing cards face-up and race to spot pairs or 
 8. Cards add to 10. 
 
 ## Installation
-1. Clone the repository
-2. Install the dependencies
+1. ****Clone the repository**
+2. **Install the dependencies**
+
 ```pip install -r requirements.txt```
 
 ## Dataset
