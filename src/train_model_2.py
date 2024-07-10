@@ -37,11 +37,8 @@ def lr_scheduler(epoch):
     else:
         return initial_lr * 0.01
 
-####### SETTING UP DATA #######
-
 # next, augment the data
 # essentially, "mess" with the image to simulate real-world inconsistencies
-# un-augmented images also used, in addition to these
 
 train_datagen = ImageDataGenerator(
     width_shift_range = 0.2,
