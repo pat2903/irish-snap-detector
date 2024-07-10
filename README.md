@@ -25,7 +25,7 @@ Note: An external webcam/camera is recommended. If you do not have one, go to sr
 1. **Clone the repository & navigate to the project directory**
 2. **Install the dependencies**: ```pip install -r requirements.txt```
 3. **Run the code**: ```python3 src/main.py```. Note: you will need to grant access to your camera.
-4. **Press q to quit**
+4. **Press q to quit**: once a snap is detected, the frame will freeze as the game is over.
 
 ## Dataset
 
