@@ -1,4 +1,16 @@
-# irish-snap-detector
+# Irish Snap Detector
+
+## Rules of Irish Snap
+A game where players take turns placing cards face-up and race to spot pairs or triplets of cards that correspond to the following rules (Note: these rules vary from person to person-these are the rules I usually play with):
+
+1. Basic Snap: consecutive cards with matching values;
+2. Top-Bottom Snap: the card played matches the card at the bottom of the pile;
+3. Sandwich Snap: the card played matches the one two cards beneath it;
+4. Consecutive Cards Snap: cards are in ascending or descending order;
+5. Joker Snap: Any joker played;
+6. Suit Triplet: three cards of the same suit;
+7. Same value as the number called (goes 1-10, J, Q, K don't count);
+8. Cards add to 10. 
 
 Image classification dataset taken from [kaggle](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification)
 
