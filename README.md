@@ -17,10 +17,12 @@ A game where players take turns placing cards face-up and race to spot pairs or 
 8. Cards add to 10. 
 
 ## Installation
-1. ****Clone the repository**
-2. **Install the dependencies**
 
-```pip install -r requirements.txt```
+Note: An external webcam/camera is recommended. If you do not have one, go to src/main.py and change the '1' to a '0'.
+
+1. **Clone the repository & navigate to the project directory**
+2. **Install the dependencies**: ```pip install -r requirements.txt```
+3. **Run the code**: ```python3 src/main.py```. Note: you will need to grant access to your camera.
 
 ## Dataset
 
